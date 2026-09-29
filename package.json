@@ -1,0 +1,12 @@
+{
+  "name": "saniya-afreen-portfolio",
+  "version": "1.0.0",
+  "description": "Saniya Afreen Data Science Portfolio",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve ."
+  },
+  "keywords": [],
+  "author": "Saniya Afreen",
+  "license": "ISC"
+}
