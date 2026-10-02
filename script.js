@@ -1,5 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Scroll Progress Indicator
+  // 1. Scroll-Driven Reveal Motion (IntersectionObserver)
+  const revealElements = document.querySelectorAll('.reveal');
+  
+  if ('IntersectionObserver' in window) {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      root: null,
+      threshold: 0.1,
+      rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+  } else {
+    // Fallback for older browsers
+    revealElements.forEach(el => el.classList.add('is-visible'));
+  }
+
+  // 2. Scroll Progress Bar
   const scrollProgress = document.getElementById('scrollProgress');
 
   function updateScrollProgress() {
@@ -13,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('scroll', updateScrollProgress, { passive: true });
   updateScrollProgress();
 
-  // 2. Mobile Menu Toggle
+  // 3. Mobile Menu Drawer Toggle
   const menuToggle = document.getElementById('menuToggle');
   const navLinks = document.getElementById('navLinks');
 
@@ -23,28 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 3. Navigation Scrolling
+  // 4. Smooth Navigation & Active Link Highlight
   const brandBtn = document.getElementById('brandBtn');
   if (brandBtn) {
     brandBtn.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       if (navLinks) navLinks.classList.remove('is-open');
-    });
-  }
-
-  const seeWorkBtn = document.getElementById('seeWorkBtn');
-  if (seeWorkBtn) {
-    seeWorkBtn.addEventListener('click', () => {
-      const target = document.getElementById('project');
-      if (target) target.scrollIntoView({ behavior: 'smooth' });
-    });
-  }
-
-  const letsConnectBtn = document.getElementById('letsConnectBtn');
-  if (letsConnectBtn) {
-    letsConnectBtn.addEventListener('click', () => {
-      const target = document.getElementById('contact');
-      if (target) target.scrollIntoView({ behavior: 'smooth' });
     });
   }
 
@@ -60,12 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // 4. Active Section Highlighter
   const sections = document.querySelectorAll('section[id]');
-  
   function highlightNavOnScroll() {
     let currentSection = 'about';
-    const scrollPosition = window.scrollY + 200;
+    const scrollPosition = window.scrollY + 180;
 
     sections.forEach(section => {
       const sectionTop = section.offsetTop;
@@ -116,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Close modal on Escape key press
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && certModal && certModal.classList.contains('is-active')) {
       certModal.classList.remove('is-active');
