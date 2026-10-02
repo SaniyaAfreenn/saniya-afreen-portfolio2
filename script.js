@@ -233,13 +233,75 @@ document.addEventListener('DOMContentLoaded', () => {
   spatialNavItems.forEach(item => {
     item.addEventListener('click', () => {
       const sectionId = item.getAttribute('data-section');
-      const target = document.getElementById(sectionId);
-      if (target) {
-        target.scrollIntoView({ behavior: 'smooth' });
-      }
+      // Use room navigation instead of simple scroll
+      enterRoom(sectionId);
     });
   });
 
+  // Room metadata: target Z positions for camera when entering each room
+  const rooms = {
+    about: { targetZ: 20 },
+    education: { targetZ: -260 },
+    skills: { targetZ: -420 },
+    projects: { targetZ: -600 },
+    certifications: { targetZ: -780 },
+    contact: { targetZ: -950 }
+  };
+
+  // Distance-based camera duration (1.2 – 1.8 s)
+  function calcDuration(fromZ, toZ) {
+    const dist = Math.abs(toZ - fromZ);
+    const maxDist = 1200;
+    const minDur = 1.2, maxDur = 1.8;
+    return minDur + (Math.min(dist, maxDist) / maxDist) * (maxDur - minDur);
+  }
+
+  function enterRoom(roomId) {
+    const room = rooms[roomId];
+    if (!room) return;
+    const duration = calcDuration(camera.position.z, room.targetZ);
+    // Cinematic camera move: ease-in at start, natural deceleration
+    gsap.to(camera.position, {
+      z: room.targetZ,
+      duration,
+      ease: 'power3.inOut'
+    });
+    // Show only the selected section
+    sections.forEach(sec => {
+      if (sec.id === roomId) {
+        sec.classList.add('active');
+        sec.style.display = 'flex';
+      } else {
+        sec.classList.remove('active');
+        sec.style.display = 'none';
+      }
+    });
+    spatialNavItems.forEach(item => {
+      item.classList.toggle('active', item.getAttribute('data-section') === roomId);
+    });
+    const backBtn = document.getElementById('back-world');
+    if (backBtn) backBtn.classList.remove('hidden');
+  }
+
+  function exitRoom() {
+    const duration = calcDuration(camera.position.z, 80);
+    gsap.to(camera.position, { z: 80, duration, ease: 'power3.inOut' });
+    sections.forEach(sec => {
+      sec.classList.remove('active');
+      sec.style.display = 'flex';
+    });
+    spatialNavItems.forEach(item => item.classList.remove('active'));
+    const backBtn = document.getElementById('back-world');
+    if (backBtn) backBtn.classList.add('hidden');
+  }
+
+  // Back button listener
+  const backBtn = document.getElementById('back-world');
+  if (backBtn) {
+    backBtn.addEventListener('click', exitRoom);
+  }
+
+  // Update active nav based on scroll when in world view
   function updateActiveSpatialNav() {
     const scrollPosition = window.scrollY + window.innerHeight / 2;
     sections.forEach(section => {
@@ -346,5 +408,159 @@ document.addEventListener('DOMContentLoaded', () => {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    drawSkillConnectors();
   });
+
+
+  // ==========================================
+  // 9. 3D SKILLS ARENA — SVG CONNECTORS + ORB PARALLAX TILT
+  // ==========================================
+  function drawSkillConnectors() {
+    const svg = document.getElementById('skillConnectors');
+    if (!svg) return;
+    svg.innerHTML = '';
+    const arena = document.getElementById('skills3dArena');
+    if (!arena) return;
+    const arenaRect = arena.getBoundingClientRect();
+    const groups = arena.querySelectorAll('.skill-node-group');
+    const centers = [];
+    groups.forEach(g => {
+      const orb = g.querySelector('.skill-node-orb');
+      if (!orb) return;
+      const r = orb.getBoundingClientRect();
+      centers.push({
+        x: r.left - arenaRect.left + r.width / 2,
+        y: r.top - arenaRect.top + r.height / 2
+      });
+    });
+    // Draw thin lines between each pair of cluster centres
+    for (let i = 0; i < centers.length; i++) {
+      for (let j = i + 1; j < centers.length; j++) {
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', centers[i].x);
+        line.setAttribute('y1', centers[i].y);
+        line.setAttribute('x2', centers[j].x);
+        line.setAttribute('y2', centers[j].y);
+        line.setAttribute('stroke', 'rgba(37,99,235,0.10)');
+        line.setAttribute('stroke-width', '1');
+        line.setAttribute('stroke-dasharray', '4 6');
+        svg.appendChild(line);
+      }
+    }
+  }
+
+  // Orb parallax tilt on mouse move over the arena
+  const skillsArena = document.getElementById('skills3dArena');
+  if (skillsArena) {
+    skillsArena.addEventListener('mousemove', (e) => {
+      const rect = skillsArena.getBoundingClientRect();
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const dx = (e.clientX - rect.left - cx) / cx; // -1 to 1
+      const dy = (e.clientY - rect.top - cy) / cy;
+      skillsArena.querySelectorAll('.skill-node-group').forEach((g, i) => {
+        const depth = parseFloat(getComputedStyle(g).getPropertyValue('--gz')) || 0;
+        const factor = 1 + depth / 200; // deeper nodes move more
+        const shiftX = dx * 18 * factor;
+        const shiftY = dy * 12 * factor;
+        g.style.setProperty('--parallax-x', `${shiftX}px`);
+        g.style.setProperty('--parallax-y', `${shiftY}px`);
+        g.style.transform = `translate(
+          calc(-50% + var(--gx, 0px) + ${shiftX}px),
+          calc(-50% + var(--gy, 0px) + ${shiftY}px)
+        ) translateZ(var(--gz, 0px))`;
+      });
+    });
+    skillsArena.addEventListener('mouseleave', () => {
+      skillsArena.querySelectorAll('.skill-node-group').forEach(g => {
+        g.style.transform = '';
+      });
+    });
+  }
+
+  // Draw connectors once sections load
+  setTimeout(drawSkillConnectors, 600);
+
+
+  // ==========================================
+  // 10. MOBILE HORIZONTAL SWIPE NAVIGATION
+  // ==========================================
+  (function initSwipeNav() {
+    const roomOrder = ['about', 'education', 'skills', 'projects', 'certifications', 'contact'];
+    let currentRoomIndex = -1; // -1 = world view
+    let touchStartX = 0;
+    let touchStartY = 0;
+    const SWIPE_THRESHOLD = 60;
+
+    // Only activate on touch/mobile
+    if (!('ontouchstart' in window)) return;
+
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      // Only handle horizontal swipes (not accidental vertical scrolls)
+      if (Math.abs(dx) < SWIPE_THRESHOLD || Math.abs(dy) > Math.abs(dx) * 0.8) return;
+
+      if (dx < 0) {
+        // Swipe LEFT → move forward in world / or enter first room from world
+        if (currentRoomIndex === -1) {
+          currentRoomIndex = 0;
+          enterRoom(roomOrder[0]);
+        } else if (currentRoomIndex < roomOrder.length - 1) {
+          currentRoomIndex++;
+          enterRoom(roomOrder[currentRoomIndex]);
+        }
+      } else {
+        // Swipe RIGHT → go back
+        if (currentRoomIndex > 0) {
+          currentRoomIndex--;
+          enterRoom(roomOrder[currentRoomIndex]);
+        } else if (currentRoomIndex === 0) {
+          currentRoomIndex = -1;
+          exitRoom();
+        }
+      }
+    }, { passive: true });
+
+    // Patch enterRoom to keep swipe index in sync when nav is tapped
+    const origEnter = window.__enterRoom || enterRoom;
+    function patchedEnter(roomId) {
+      const idx = roomOrder.indexOf(roomId);
+      if (idx !== -1) currentRoomIndex = idx;
+      origEnter(roomId);
+    }
+    // Re-bind nav items to patched version
+    document.querySelectorAll('.spatial-nav-item').forEach(item => {
+      item.replaceWith(item.cloneNode(true));
+    });
+    document.querySelectorAll('.spatial-nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        patchedEnter(item.getAttribute('data-section'));
+      });
+    });
+    // Back button
+    const bb = document.getElementById('back-world');
+    if (bb) {
+      bb.addEventListener('click', () => {
+        currentRoomIndex = -1;
+        exitRoom();
+      });
+    }
+
+    // Add swipe hint indicator on mobile (small dots at bottom)
+    const hint = document.createElement('div');
+    hint.id = 'swipe-hint';
+    hint.innerHTML = `<span>← Swipe to explore →</span>`;
+    hint.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.85);backdrop-filter:blur(8px);border:1px solid rgba(37,99,235,0.2);border-radius:9999px;padding:6px 18px;font-size:11px;font-family:monospace;color:#64748B;z-index:500;pointer-events:none;';
+    document.body.appendChild(hint);
+    // Hide after 4 s
+    setTimeout(() => { hint.style.opacity = '0'; hint.style.transition = 'opacity 0.8s'; }, 4000);
+    setTimeout(() => { hint.remove(); }, 5000);
+  })();
+
 });

@@ -62,6 +62,7 @@
       </button>
     </nav>
   </div>
+  <button id="back-world" class="hidden" style="position:fixed;top:24px;left:24px;padding:8px 12px;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);z-index:500;cursor:pointer;">← World</button>
 
   <main class="spatial-shell">
     <!-- Hero & "About Me" Profile Spatial Scene (Z = 0 -> -120) -->
@@ -89,7 +90,19 @@
             <p class="bio-subtitle">B.Tech Student in Artificial Intelligence & Data Science</p>
 
             <p class="bio-paragraph">
-              I am a B.Tech student specializing in Artificial Intelligence & Data Science at REVA University, Bengaluru, with an interest in programming, artificial intelligence, data science, and technology-driven solutions. I enjoy learning new technologies, solving practical problems, and developing projects that address real-world challenges. I am currently focused on strengthening my technical and problem-solving skills through academics, projects, and continuous learning.
+              I am Saniya Afreen, a B.Tech student specializing in Artificial Intelligence and Data Science at REVA University, Bengaluru. I am passionate about programming, artificial intelligence, data science, and developing technology-driven solutions to real-world problems.
+            </p>
+            <p class="bio-paragraph">
+              I am building a strong foundation in programming, data analysis, databases, machine learning, and problem-solving. I enjoy exploring new technologies and applying what I learn through academic and personal projects.
+            </p>
+            <p class="bio-paragraph">
+              My areas of interest include Artificial Intelligence, Machine Learning, Data Science, Programming, Computer Vision, Data Analysis, and technology-driven solutions.
+            </p>
+            <p class="bio-paragraph">
+              I believe in learning by building and continuously improving through practical experience. I enjoy understanding problems, breaking them into smaller components, exploring possible solutions, and turning ideas into functional technology-based projects.
+            </p>
+            <p class="bio-paragraph">
+              As a student, my current focus is on strengthening my technical skills, expanding my knowledge of AI and Data Science, building meaningful projects, and gaining practical industry exposure through internships and collaborative technical experiences.
             </p>
 
             <div class="profile-actions">
@@ -151,92 +164,74 @@
         <h2>Technical <span>Skills</span></h2>
       </div>
 
-      <div class="skills-grid">
-        <article class="skill-category-card">
-          <div class="category-header">
-            <div class="category-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-code">
-                <polyline points="16 18 22 12 16 6"></polyline>
-                <polyline points="8 6 2 12 8 18"></polyline>
-              </svg>
-            </div>
-            <h3>Programming</h3>
-          </div>
-          <div class="skill-pills">
-            <span class="skill-pill">Python</span>
-            <span class="skill-pill">C</span>
-          </div>
-        </article>
+      <div class="skills-3d-arena" id="skills3dArena">
 
-        <article class="skill-category-card">
-          <div class="category-header">
-            <div class="category-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-database">
-                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
-                <path d="M3 5V19A9 3 0 0 0 21 19V5"></path>
-                <path d="M3 12A9 3 0 0 0 21 12"></path>
-              </svg>
+        <!-- Programming -->
+        <div class="skill-node-group" data-group="programming" style="--gx:-320px;--gy:-120px;--gz:40px">
+          <div class="skill-node-orb skill-node-anchor">
+            <div class="orb-inner">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
             </div>
-            <h3>Data & Databases</h3>
+            <span class="orb-label">Programming</span>
           </div>
-          <div class="skill-pills">
-            <span class="skill-pill">Pandas</span>
-            <span class="skill-pill">SQL</span>
-            <span class="skill-pill">MySQL</span>
-          </div>
-        </article>
+          <div class="skill-node-pill" style="--dx:0px;--dy:-70px">Python</div>
+          <div class="skill-node-pill" style="--dx:0px;--dy:70px">C</div>
+        </div>
 
-        <article class="skill-category-card">
-          <div class="category-header">
-            <div class="category-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-brain">
-                <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 0 5.61 4 4 0 0 0 5.545 1.573A3 3 0 1 0 12 18"></path>
-                <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1 0 5.61 4 4 0 0 1-5.545 1.573A3 3 0 1 1 12 18"></path>
-                <path d="M15 13a3 3 0 1 0-6 0"></path>
-              </svg>
+        <!-- Data & Databases -->
+        <div class="skill-node-group" data-group="data" style="--gx:-100px;--gy:140px;--gz:20px">
+          <div class="skill-node-orb skill-node-anchor">
+            <div class="orb-inner">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
             </div>
-            <h3>AI & Machine Learning</h3>
+            <span class="orb-label">Data &amp; Databases</span>
           </div>
-          <div class="skill-pills">
-            <span class="skill-pill">Machine Learning</span>
-            <span class="skill-pill">Computer Vision</span>
-            <span class="skill-pill">Object Detection</span>
-          </div>
-        </article>
+          <div class="skill-node-pill" style="--dx:-80px;--dy:-60px">Pandas</div>
+          <div class="skill-node-pill" style="--dx:80px;--dy:-60px">SQL</div>
+          <div class="skill-node-pill" style="--dx:0px;--dy:70px">MySQL</div>
+        </div>
 
-        <article class="skill-category-card">
-          <div class="category-header">
-            <div class="category-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-wrench">
-                <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
-              </svg>
+        <!-- AI & ML -->
+        <div class="skill-node-group" data-group="ai" style="--gx:260px;--gy:-80px;--gz:60px">
+          <div class="skill-node-orb skill-node-anchor">
+            <div class="orb-inner">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 0 5.61 4 4 0 0 0 5.545 1.573A3 3 0 1 0 12 18"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1 0 5.61 4 4 0 0 1-5.545 1.573A3 3 0 1 1 12 18"/><path d="M15 13a3 3 0 1 0-6 0"/></svg>
             </div>
-            <h3>Tools & Platforms</h3>
+            <span class="orb-label">AI &amp; Machine Learning</span>
           </div>
-          <div class="skill-pills">
-            <span class="skill-pill">GitHub</span>
-            <span class="skill-pill">VS Code</span>
-            <span class="skill-pill">Google Colab</span>
-          </div>
-        </article>
+          <div class="skill-node-pill" style="--dx:-100px;--dy:-55px">Machine Learning</div>
+          <div class="skill-node-pill" style="--dx:100px;--dy:-55px">Computer Vision</div>
+          <div class="skill-node-pill" style="--dx:0px;--dy:75px">Object Detection</div>
+        </div>
 
-        <article class="skill-category-card">
-          <div class="category-header">
-            <div class="category-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cpu">
-                <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-                <rect x="9" y="9" width="6" height="6"></rect>
-                <path d="M15 2v2"></path><path d="M15 20v2"></path><path d="M2 15h2"></path><path d="M2 9h2"></path><path d="M20 15h2"></path><path d="M20 9h2"></path><path d="M9 2v2"></path><path d="M9 20v2"></path>
-              </svg>
+        <!-- Tools -->
+        <div class="skill-node-group" data-group="tools" style="--gx:160px;--gy:150px;--gz:30px">
+          <div class="skill-node-orb skill-node-anchor">
+            <div class="orb-inner">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
             </div>
-            <h3>Core Fundamentals</h3>
+            <span class="orb-label">Tools &amp; Platforms</span>
           </div>
-          <div class="skill-pills">
-            <span class="skill-pill">Data Structures</span>
-            <span class="skill-pill">Statistics</span>
-            <span class="skill-pill">Problem Solving</span>
+          <div class="skill-node-pill" style="--dx:-85px;--dy:-60px">GitHub</div>
+          <div class="skill-node-pill" style="--dx:85px;--dy:-60px">VS Code</div>
+          <div class="skill-node-pill" style="--dx:0px;--dy:72px">Google Colab</div>
+        </div>
+
+        <!-- Core -->
+        <div class="skill-node-group" data-group="core" style="--gx:-10px;--gy:-30px;--gz:80px">
+          <div class="skill-node-orb skill-node-anchor">
+            <div class="orb-inner">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></svg>
+            </div>
+            <span class="orb-label">Core Fundamentals</span>
           </div>
-        </article>
+          <div class="skill-node-pill" style="--dx:-105px;--dy:-55px">Data Structures</div>
+          <div class="skill-node-pill" style="--dx:90px;--dy:-55px">Statistics</div>
+          <div class="skill-node-pill" style="--dx:0px;--dy:72px">Problem Solving</div>
+        </div>
+
+        <!-- SVG connector lines drawn by JS -->
+        <svg class="skill-connectors" id="skillConnectors" xmlns="http://www.w3.org/2000/svg"></svg>
       </div>
     </section>
 

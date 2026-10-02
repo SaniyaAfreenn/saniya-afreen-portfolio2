@@ -536,63 +536,136 @@ h2 span {
   margin-top: 16px;
 }
 
-/* Skills Grid */
-.skills-grid {
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
-  margin-top: 44px;
-  display: grid;
+/* ========================================
+   3D SKILLS ARENA
+   ======================================== */
+.skills-3d-arena {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  margin-top: 48px;
+  perspective: 900px;
+  transform-style: preserve-3d;
+  overflow: visible;
 }
 
-.skill-category-card {
-  background: var(--card-bg);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  padding: 32px;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.skill-category-card:hover {
-  border-color: var(--accent-border);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-6px) translateZ(10px);
-}
-
-.category-header {
-  align-items: center;
-  gap: 14px;
+/* Each skill group is positioned freely in 2.5D space */
+.skill-node-group {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(
+    calc(-50% + var(--gx, 0px)),
+    calc(-50% + var(--gy, 0px))
+  ) translateZ(var(--gz, 0px));
   display: flex;
-  margin-bottom: 22px;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 2;
 }
 
-.category-icon {
-  width: 44px;
-  height: 44px;
-  background: var(--accent-light);
-  color: var(--accent);
-  border-radius: var(--radius-sm);
+/* Anchor orb */
+.skill-node-orb {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  border: 1.5px solid var(--accent-border);
+  box-shadow: 0 8px 28px -6px rgba(37,99,235,0.22), 0 2px 8px rgba(15,23,42,0.06);
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+  backdrop-filter: blur(10px);
 }
 
-.skill-category-card h3 {
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--text-primary);
+.skill-node-orb:hover,
+.skill-node-group:hover .skill-node-orb {
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: 0 12px 40px -8px rgba(37,99,235,0.5), 0 0 0 6px rgba(37,99,235,0.12);
+  transform: scale(1.15) translateZ(20px);
 }
 
-.skill-pills {
+.skill-node-orb:hover svg,
+.skill-node-group:hover .skill-node-orb svg {
+  stroke: #fff;
+}
+
+.orb-inner {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
 }
 
+/* Orb label below */
+.orb-label {
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: center;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.skill-node-group:hover .orb-label {
+  color: var(--accent);
+}
+
+/* Satellite skill pills — positioned absolutely relative to the group */
+.skill-node-pill {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(calc(-50% + var(--dx, 0px)), calc(-50% + var(--dy, 0px)));
+  background: rgba(255,255,255,0.82);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 7px 16px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  box-shadow: 0 4px 14px -4px rgba(15,23,42,0.08);
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+  opacity: 0.85;
+}
+
+.skill-node-group:hover .skill-node-pill {
+  background: var(--accent-light);
+  border-color: var(--accent-border);
+  color: var(--accent);
+  opacity: 1;
+  box-shadow: 0 6px 20px -4px rgba(37,99,235,0.18);
+  transform: translate(
+    calc(-50% + var(--dx, 0px) * 1.15),
+    calc(-50% + var(--dy, 0px) * 1.15)
+  );
+}
+
+/* SVG lines connecting clusters */
+.skill-connectors {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Legacy skill pills (kept for cert/contact hover states) */
 .skill-pill {
-  background: var(--bg-subtle);
+  background: var(--bg-subtle, #F1F5F9);
   color: var(--text-secondary);
   border: 1px solid var(--border);
   padding: 9px 16px;
@@ -612,6 +685,39 @@ h2 span {
   border-color: var(--accent-border);
   transform: scale(1.08) translateZ(8px);
 }
+
+/* Mobile: stack skill groups in a grid instead of floating */
+@media (max-width: 700px) {
+  .skills-3d-arena {
+    height: auto;
+    perspective: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 0;
+  }
+  .skill-node-group {
+    position: static;
+    transform: none !important;
+    flex-direction: column;
+    align-items: center;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 20px 16px;
+    box-shadow: var(--shadow-sm);
+  }
+  .skill-node-pill {
+    position: static;
+    transform: none !important;
+    display: inline-block;
+    margin: 4px;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .skill-connectors { display: none; }
+}
+
 
 /* Labour Link Project Card */
 .project-card {
@@ -763,6 +869,12 @@ h2 span {
   color: var(--accent);
   flex-shrink: 0;
 }
+
+/* Utility hidden class */
+.hidden {
+  display: none !important;
+}
+
 
 /* Lightbox Modal */
 .cert-modal {
