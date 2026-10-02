@@ -11,43 +11,81 @@
 </head>
 <body>
 
+  <!-- Custom Soft Magnetic Cursor Follower -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
   <!-- Scroll Progress Indicator -->
   <div class="scroll-progress" id="scrollProgress" style="width: 0%"></div>
 
-  <!-- Primary Navigation -->
+  <!-- Navigation Header -->
   <nav class="site-nav" aria-label="Primary navigation">
     <button class="brand" id="brandBtn" aria-label="Back to top">
       <span class="brand-mark">SA</span>
       <span>Saniya Afreen</span>
     </button>
     
-    <div class="nav-links" id="navLinks">
-      <button data-section="about" class="active">about</button>
-      <button data-section="education">education</button>
-      <button data-section="skills">skills</button>
-      <button data-section="projects">projects</button>
-      <button data-section="certifications">certifications</button>
-      <button data-section="contact">contact</button>
-      <a class="nav-resume" href="mailto:saniyaafreen561@gmail.com?subject=Resume%20request">
+    <div class="nav-actions">
+      <a class="nav-resume btn-secondary" style="padding: 8px 16px; font-size: 13px;" href="mailto:saniyaafreen561@gmail.com?subject=Resume%20request">
         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download">
           <path d="M12 15V3"></path>
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
           <path d="m7 10 5 5 5-5"></path>
-        </svg> resume
+        </svg> Resume
       </a>
-    </div>
 
-    <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu">
-      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu">
-        <path d="M4 5h16"></path>
-        <path d="M4 12h16"></path>
-        <path d="M4 19h16"></path>
-      </svg>
-    </button>
+      <!-- Slick Hamburger Trigger -->
+      <button class="menu-trigger" id="menuTrigger" aria-label="Open menu drawer">
+        <span>Menu</span>
+        <div class="menu-trigger-icon">
+          <span></span>
+          <span></span>
+        </div>
+      </button>
+    </div>
   </nav>
 
+  <!-- Lusion-Inspired Side-Sliding Navigation Drawer -->
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <aside class="side-drawer" id="sideDrawer" aria-label="Main menu panel">
+    <div>
+      <div class="drawer-header">
+        <span class="drawer-title">Navigation</span>
+        <button class="drawer-close-btn" id="drawerCloseBtn" aria-label="Close menu drawer">&times;</button>
+      </div>
+
+      <nav class="drawer-nav-links">
+        <button class="drawer-nav-item" data-section="about">
+          <span class="nav-index">01</span> About
+        </button>
+        <button class="drawer-nav-item" data-section="education">
+          <span class="nav-index">02</span> Education
+        </button>
+        <button class="drawer-nav-item" data-section="skills">
+          <span class="nav-index">03</span> Toolkit
+        </button>
+        <button class="drawer-nav-item" data-section="projects">
+          <span class="nav-index">04</span> Projects
+        </button>
+        <button class="drawer-nav-item" data-section="certifications">
+          <span class="nav-index">05</span> Certifications
+        </button>
+        <button class="drawer-nav-item" data-section="contact">
+          <span class="nav-index">06</span> Contact
+        </button>
+      </nav>
+    </div>
+
+    <div class="drawer-footer">
+      <p class="drawer-footer-text">B.Tech Student · AI & Data Science</p>
+      <div class="drawer-contact-links">
+        <a href="mailto:saniyaafreen561@gmail.com">saniyaafreen561@gmail.com</a>
+      </div>
+    </div>
+  </aside>
+
   <main>
-    <!-- Hero & Dedicated "About Me" Profile Section -->
+    <!-- Profile & Hero Section -->
     <section class="hero-section section-shell" id="about">
       <div class="profile-card reveal">
         <div class="profile-avatar-wrap">
@@ -76,7 +114,7 @@
 
           <div class="profile-actions">
             <a href="#projects" class="btn-primary">
-              View My Work
+              Explore Projects
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-down-right">
                 <path d="m7 7 10 10"></path>
                 <path d="M17 7v10H7"></path>
@@ -104,14 +142,14 @@
       <div class="timeline reveal">
         <article class="timeline-item">
           <span class="timeline-year">Currently Pursuing</span>
-          <h3>B.Tech in Artificial Intelligence & Data Science</h3>
+          <h3>B.Tech — Artificial Intelligence & Data Science</h3>
           <p>REVA University, Bengaluru</p>
           <span class="timeline-tag">Undergraduate Degree</span>
         </article>
 
         <article class="timeline-item">
           <span class="timeline-year">Pre-University</span>
-          <h3>Pre-University Education (PUC)</h3>
+          <h3>Pre-University Course (PUC)</h3>
           <p>MVJ PU College</p>
           <span class="timeline-tag">Higher Secondary</span>
         </article>
@@ -235,20 +273,20 @@
 
       <div class="project-card reveal">
         <div class="project-content">
-          <span class="project-badge">Featured Project</span>
+          <span class="project-badge">Featured Concept Project</span>
           <h3>Labour Link</h3>
           <p class="project-description">
-            A technology-based project connecting workers with employment opportunities, bridging the gap between workers and employers through a practical, accessible digital platform.
+            A technology-based project focused on connecting workers with suitable employment opportunities while making the hiring process more accessible and efficient.
           </p>
           <div class="project-tags">
-            <span>Social Impact</span>
             <span>Employment Access</span>
-            <span>Technology Platform</span>
+            <span>Worker Empowerment</span>
+            <span>Digital Platform</span>
           </div>
         </div>
 
         <div class="project-aside">
-          <p>Empowering daily-wage and skilled workers with better access to work opportunities.</p>
+          <p>Connecting people with the right possibilities through thoughtful, human-centered design.</p>
           <div class="project-actions">
             <a href="https://6a2e5b0ef09b3239fb26912f--sparkly-platypus-16d381.netlify.app" target="_blank" rel="noreferrer" class="btn-primary">
               View Live Project
@@ -259,7 +297,7 @@
               </svg>
             </a>
             <a href="mailto:saniyaafreen561@gmail.com?subject=Labour%20Link%20project" class="btn-secondary">
-              Talk About the Project
+              Talk About Project
             </a>
           </div>
         </div>
